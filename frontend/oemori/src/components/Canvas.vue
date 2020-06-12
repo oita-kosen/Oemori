@@ -1,4 +1,14 @@
 <template>
+  <!-- VueのComponentファイルは，
+    コンポーネントに必要なtemplate(html), style(css), script(js)が一つのファイルにまとめられている．
+    - templateで 骨組み（大まかなページのレイアウト）
+    - styleでフォントや位置・サイズ等の具体的な装飾を行う
+    - scriptでアニメーション等の内部動作
+    という役割分担がある．
+    ここではざっくりいうとカーソルの位置に線を書いたりする処理のプログラムが大半を占めるので
+    とりあえずプログラムのほとんどは scriptに書けば良い．
+    （それ以外の見た目の調整はあとでいい）
+   -->
   <canvas class="container"
           id="canvas"
           width="1024px" height="1024px"
@@ -28,6 +38,7 @@ export default {
     this.context = canvas.getContext('2d')
   },
   methods: {
+    // methods内に自作の関数を定義していく．
     onMouseMove(e) {
       // マウスが動いたときに呼ばれるコールバック
       // <canvas> タグにイベントに対するコールバックを設定している
@@ -56,7 +67,7 @@ export default {
         this.context.moveTo(mouseX, mouseY) // パスの開始座標を指定
         this.isStarted = true
       }
-    } 
+    },
   }
 }
 </script>
