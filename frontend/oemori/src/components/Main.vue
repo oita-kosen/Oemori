@@ -10,6 +10,7 @@
     <palette class="palette"
       :colors="colors"
       @colorSelected="onColorSelected"
+      @brushSelected="onBrushSelected"
     />
   </div>
 </template>
@@ -34,17 +35,29 @@ export default {
         orange: { name:"orange", color: "#FFAD33", hasBorder: false }, 
         black: { name:"black", color: "#333333", hasBorder: false },
       },
-      width: 3,
+      width: 10,
       mode: "pen",
       canvasWidth: 360,
       canvasHeight: 360,
-      _canvasWrapper: null
+      eraserWidth: 30, // TODO: Canvasに渡す消しゴム用の太さパラメータを作るべき？
+      penWidth: 10
     }
   },
   methods: {
     onColorSelected(color){
       console.log('selected color:', color.color);
       this.color = color.color;
+      // 消しゴムモードの時は強制的にペンモードにする
+      if(this.mode === "eraser"){
+        this.mode = "pen";
+        this.width = this.penWidth;
+        // this.width = 30;
+      }
+    },
+    onBrushSelected(brushName){
+      this.mode = brushName;
+      this.width = this.eraserWidth;
+      console.log("eraser width:", this.eraserWidth);
     }
   },
   computed: {

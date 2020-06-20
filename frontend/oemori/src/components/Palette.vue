@@ -37,12 +37,13 @@ export default {
   },
   props:['colors'],
   methods:{
-    onSelectColor(e){
-      console.log(e);
-      this.$emit('colorSelected', this.colors[e])
+    onSelectColor(colorName){
+      console.log("color name:", colorName);
+      this.$emit('colorSelected', this.colors[colorName]);
     },
-    onSelectBrush(e){
-      console.log(e);
+    onSelectBrush(brushName){
+      console.log("brush name:", brushName);
+      this.$emit('brushSelected', brushName);
     }
   }
 }
