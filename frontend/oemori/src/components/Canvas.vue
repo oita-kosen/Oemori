@@ -32,6 +32,7 @@ export default {
       canvas: null,
       context: null,
       isMousePress: false,
+      leastImage: null,
     };
   },
   props: {
@@ -78,9 +79,6 @@ export default {
       // マウスが動いたときに呼ばれるコールバック
       // <canvas> タグにイベントに対するコールバックを設定している
 
-      //マウスが押されてなければ何もしない
-      if (this.isMousePress === false) return;
-
       const rect = e.target.getBoundingClientRect();
       let mouseX = e.clientX - rect.left;
       let mouseY = e.clientY - rect.top;
@@ -94,6 +92,44 @@ export default {
       this.lastDrawTime = now;
       console.log("cursor:", mouseX, mouseY);
 
+      if (this.leastImage !== null) {
+        this.context.putImageData(this.leastImage, 0, 0);
+        this.leastImage = null;
+      }
+
+      //マウスが押されてなければブラシプレビューを表示
+      if (this.isMousePress === false) {
+        this.leastImage = this.context.getImageData(
+          0,
+          0,
+          this.canvasWidth,
+          this.canvasHeight
+        );
+        console.log(this.mode);
+
+        this.context.beginPath();
+        if (this.mode === "eraser") {
+          this.context.setLineDash([3, 2, 3, 2]);
+          this.context.fillStyle = "rgb(255,255,255)";
+        } else if (this.mode === "pen") {
+          this.context.setLineDash([]);
+          this.context.fillStyle = this.lineColor;
+        }
+        this.context.lineWidth = 1;
+        this.context.strokeStyle = "rgb(0, 0, 0)";
+        this.context.arc(
+          mouseX,
+          mouseY,
+          this.lineWidth / 2,
+          0,
+          Math.PI * 2,
+          true
+        );
+        this.context.fill();
+        this.context.stroke();
+        return;
+      }
+
       if (this.isStarted) {
         //色を指定
         switch (this.mode) {
@@ -104,6 +140,7 @@ export default {
             this.context.strokeStyle = "rgb(255, 255, 255)";
             break;
         }
+        this.context.setLineDash([]);
         this.context.lineCap = "round";
         this.context.lineJoin = "round";
         this.context.lineWidth = this.lineWidth;
@@ -132,5 +169,6 @@ export default {
 
 <style lang="stylus" scoped>
 .container {
+  border : solid 2px
 }
 </style>
