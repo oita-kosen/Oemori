@@ -11,7 +11,7 @@
    -->
   <canvas class="container"
           id="canvas"
-          width="1024px" height="1024px"
+          :width="canvasWidth" :height="canvasHeight"
           @mousemove="(e) => onMouseMove(e)">
   </canvas>
 </template>
@@ -26,6 +26,30 @@ export default {
       lastDrawTime: 0,
       canvas: null,
       context: null
+    }
+  },
+  props: {
+    // コンポーネントが外部から受け取る引数の定義
+
+    lineColor: {
+      type: String,
+      default: "rgb(0, 0, 255)"
+    },
+    lineWidth: {
+      type: Number,
+      default: 3
+    },
+    mode: {
+      type: String,
+      default: "pen"
+    },
+    canvasWidth: {
+      type: Number,
+      default: 1024
+    },
+    canvasHeight: {
+      type: Number,
+      default: 1024
     }
   },
   mounted() {
@@ -57,8 +81,8 @@ export default {
       console.log("cursor:", mouseX, mouseY)
 
       if (this.isStarted) {
-        this.context.strokeStyle = 'rgb(0,0,255)' //線の色は青
-        this.context.lineWidth = 1;
+        this.context.strokeStyle = this.lineColor //線の色は青
+        this.context.lineWidth = this.lineWidth;
         this.context.lineTo(mouseX, mouseY)
         this.context.stroke() // 現在のパスを輪郭表示
       } else {
