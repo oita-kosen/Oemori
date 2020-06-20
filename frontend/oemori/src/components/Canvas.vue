@@ -118,6 +118,12 @@ export default {
       this.isMousePress = false;
       this.isStarted = false;
     },
+    clear() {
+      //全消し
+      this.context.rect(0, 0, this.canvasWidth, this.canvasHeight);
+      this.context.filStyle = "rgb(255, 255, 255)";
+      this.context.fill();
+    },
   },
 };
 </script>
