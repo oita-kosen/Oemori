@@ -104,6 +104,8 @@ export default {
             this.context.strokeStyle = "rgb(255, 255, 255)";
             break;
         }
+        this.context.lineCap = "round";
+        this.context.lineJoin = "round";
         this.context.lineWidth = this.lineWidth;
         this.context.lineTo(mouseX, mouseY);
         this.context.stroke(); // 現在のパスを輪郭表示
