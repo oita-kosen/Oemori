@@ -17,6 +17,7 @@
           :color="color.color"
           :hasBorder="color.hasBorder"
           :size="paletteColorSize"
+          :isCovered="color.name != selectedColorName"
           @select="onSelectColor"
         />
       </div>
@@ -29,21 +30,24 @@ import Vue from 'vue'
 import PaletteColor from './PaletteColor'
 
 export default {
-  data() {
+  data () {
     return {
-      
       paletteColorSize: 42
     }
   },
-  props:['colors'],
-  methods:{
-    onSelectColor(colorName){
-      console.log("color name:", colorName);
-      this.$emit('colorSelected', this.colors[colorName]);
+  props: ['colors', 'selectedColorName'],
+  methods: {
+    onSelectColor (colorName) {
+      console.log('color name:', colorName)
+      // this.selectedColorName = colorName
+      this.$emit('colorSelected', this.colors[colorName])
     },
-    onSelectBrush(brushName){
-      console.log("brush name:", brushName);
-      this.$emit('brushSelected', brushName);
+    onSelectBrush (brushName) {
+      console.log('brush name:', brushName)
+      // if (brushName === 'eraser') {
+      //   // this.selectedColorName = null
+      // }
+      this.$emit('brushSelected', brushName)
     }
   }
 }

@@ -1,7 +1,7 @@
 <template>
   <div class="main-column" id="main_column">
     <Canvas class="canvas"
-      :lineColor="color"
+      :lineColor="colors[selectedColorName].color"
       :lineWidth="width"
       :mode="mode"
       :canvasWidth="canvasWidth"
@@ -9,6 +9,7 @@
     />
     <palette class="palette"
       :colors="colors"
+      :selectedColorName="mode === 'pen' ? selectedColorName : null"
       @colorSelected="onColorSelected"
       @brushSelected="onBrushSelected"
     />
@@ -23,7 +24,7 @@ import Vue from 'vue'
 export default {
   data () {
     return {
-      color: 'rgba(255, 0, 0, 1)',
+      selectedColorName: 'red',
       colors: {
         white: { name: 'white', color: '#FEFEFE', hasBorder: true },
         red: { name: 'red', color: '#FF2762', hasBorder: false },
@@ -46,7 +47,7 @@ export default {
   methods: {
     onColorSelected (color) {
       console.log('selected color:', color.color)
-      this.color = color.color
+      this.selectedColorName = color.name
       // 消しゴムモードの時は強制的にペンモードにする
       if (this.mode === 'eraser') {
         this.mode = 'pen'
