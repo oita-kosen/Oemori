@@ -5,7 +5,7 @@
           name=eraser
           :color="colors.white.color"
           :hasBorder="true"
-          :size="paletteColorSize+10"
+          :size="paletteColorSizeSmall+10"
           @select="onSelectBrush">
         <i class="palette-icon fas fa-eraser"></i>
       </palette-color>
@@ -16,7 +16,7 @@
           :name="color.name"
           :color="color.color"
           :hasBorder="color.hasBorder"
-          :size="paletteColorSize"
+          :size="color.name == selectedColorName ? paletteColorSizeBig : paletteColorSizeSmall"
           :isCovered="color.name != selectedColorName"
           @select="onSelectColor"
         />
@@ -32,7 +32,8 @@ import PaletteColor from './PaletteColor'
 export default {
   data () {
     return {
-      paletteColorSize: 42
+      paletteColorSizeSmall: 42,
+      paletteColorSizeBig: 45
     }
   },
   props: ['colors', 'selectedColorName'],
