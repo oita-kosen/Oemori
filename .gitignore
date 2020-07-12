@@ -1,3 +1,10 @@
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
 
 # Common
 .DS_Store
@@ -86,3 +93,4 @@ typings/
 
 # Stores VSCode versions used for testing VSCode extensions
 .vscode-test
+frontend/oemori/.vs/
