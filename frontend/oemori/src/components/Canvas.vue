@@ -15,9 +15,12 @@
     :width="canvasWidth"
     :height="canvasHeight"
     @mousedown="onMouseDown"
+    @touchstart="onMouseDown"
     @mousemove="onMouseMove"
+    @touchmove="onMouseMove"
     @mouseup="onMouseUp"
     @mouseleave="onMouseUp"
+    @touchend="onMouseUp"
   ></canvas>
 </template>
 
@@ -75,13 +78,31 @@ export default {
       this.isMousePress = true;
       console.log("mode:", this.mode);
     },
+
     onMouseMove(e) {
       // マウスが動いたときに呼ばれるコールバック
       // <canvas> タグにイベントに対するコールバックを設定している
 
-      const rect = e.target.getBoundingClientRect();
-      let mouseX = e.clientX - rect.left;
-      let mouseY = e.clientY - rect.top;
+      let mouseX;
+      let mouseY;
+
+      if (navigator.userAgent.match(/iPhone|Android.+Mobile/)) {
+        var touchObject = event.changedTouches[0];
+        var touchX = touchObject.pageX;
+        var touchY = touchObject.pageY;
+        // 要素の位置を取得
+        var clientRect = e.target.getBoundingClientRect();
+        var positionX = clientRect.left + window.pageXOffset;
+        var positionY = clientRect.top + window.pageYOffset;
+
+        // 要素内におけるタッチ位置を計算
+        mouseX = touchX - positionX;
+        mouseY = touchY - positionY;
+      } else {
+        const rect = e.target.getBoundingClientRect();
+        mouseX = e.clientX - rect.left;
+        mouseY = e.clientY - rect.top;
+      }
 
       // 最後に描画してから一定時間立たないと更新しない
       let now = new Date().getTime(); //Unixtime[ms]
@@ -153,10 +174,12 @@ export default {
         this.isStarted = true;
       }
     },
+
     onMouseUp(e) {
       this.isMousePress = false;
       this.isStarted = false;
     },
+
     clear() {
       //全消し
       this.context.rect(0, 0, this.canvasWidth, this.canvasHeight);
